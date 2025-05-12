@@ -12,18 +12,36 @@
         />
   
         <div class="flex flex-wrap justify-center gap-4">
-          <button class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">🔁 Translate</button>
+          <button @click="searchImage" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+            🔁 Translate</button>
           <button class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">🔊 Listen</button>
           <button class="bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-700">🧠 Context</button>
         </div>
   
         <p class="text-center text-gray-500 italic">The results will appear here...</p>
+        <div v-if="imageUrl" class="mt-6">
+  <img
+    :src="imageUrl"
+    alt="Related visual context"
+    class="mx-auto rounded-xl shadow-lg max-h-64 object-cover"
+  />
+</div>
       </div>
     </section>
   </template>
   
   <script setup>
   import { ref } from 'vue'
-  const word = ref('')
+import { fetchImageForWord } from '../services/unplashService'
+
+
+const word = ref('')
+const imageUrl = ref(null)
+
+const searchImage = async () => {
+  if (!word.value) return
+  imageUrl.value = await fetchImageForWord(word.value)
+}
+  
   </script>
   
